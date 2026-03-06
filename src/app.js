@@ -3,9 +3,11 @@ require("dotenv").config();
 const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
+const swaggerUi = require("swagger-ui-express");
 const passport = require("./config/passport");
 const connectDB = require("./config/db");
 const createSessionConfig = require("./config/session");
+const swaggerSpec = require("./config/swagger");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 
@@ -29,11 +31,49 @@ app.use(createSessionConfig());
 app.use(passport.initialize());
 app.use(passport.session());
 
+// ─── Swagger Documentation ──────────────────────────────
+
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    customSiteTitle: "OAuth Login Backend - API Docs",
+    customCss: ".swagger-ui .topbar { display: none }",
+  })
+);
+
+app.get("/api-docs.json", (_req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  res.send(swaggerSpec);
+});
+
 // ─── Routes ────────────────────────────────────────────
 
+/**
+ * @swagger
+ * /:
+ *   get:
+ *     summary: API root information
+ *     description: Returns a welcome message with available endpoint list.
+ *     tags: [Root]
+ *     responses:
+ *       200:
+ *         description: API info and endpoint map
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "OAuth Login Backend API"
+ *                 endpoints:
+ *                   type: object
+ */
 app.get("/", (_req, res) => {
   res.json({
     message: "OAuth Login Backend API",
+    documentation: "/api-docs",
     endpoints: {
       auth: {
         googleLogin: "GET /api/auth/google",
@@ -82,6 +122,7 @@ const startServer = async () => {
 
   app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Swagger docs on http://localhost:${PORT}/api-docs`);
     console.log(`Environment: ${process.env.NODE_ENV || "development"}`);
   });
 };

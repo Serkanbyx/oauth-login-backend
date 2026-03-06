@@ -8,7 +8,13 @@
     "dev": "nodemon src/app.js",
     "seed": "node src/seeds/seedUsers.js"
   },
-  "keywords": ["oauth", "passport", "google", "github", "authentication"],
+  "keywords": [
+    "oauth",
+    "passport",
+    "google",
+    "github",
+    "authentication"
+  ],
   "author": "",
   "license": "MIT",
   "type": "commonjs",
@@ -22,7 +28,9 @@
     "mongoose": "^9.2.4",
     "passport": "^0.7.0",
     "passport-github2": "^0.1.12",
-    "passport-google-oauth20": "^2.0.0"
+    "passport-google-oauth20": "^2.0.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"

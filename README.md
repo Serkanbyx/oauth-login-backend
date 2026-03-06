@@ -1,52 +1,48 @@
-[![Created by Serkanby](https://img.shields.io/badge/Created%20by-Serkanby-blue?style=flat-square)](https://serkanbayraktar.com/)
-[![GitHub](https://img.shields.io/badge/GitHub-Serkanbyx-181717?style=flat-square&logo=github)](https://github.com/Serkanbyx)
+# 🔐 OAuth Login Backend (Google / GitHub)
 
-# OAuth Login Backend (Google / GitHub)
-
-A Node.js/Express backend demonstrating **OAuth2 authentication** with Google and GitHub using **Passport.js**, MongoDB for user storage, and session-based auth management.
+A production-ready Node.js/Express backend demonstrating **OAuth2 authentication** with Google and GitHub using Passport.js. Features session-based auth with MongoDB persistent storage, Swagger API documentation, and a modern landing page.
 
 > **Security Notice:** This is a public demo project. No real API keys, secrets, or credentials are stored in the codebase. All sensitive values are loaded from environment variables via a `.env` file that is excluded from version control.
 
----
-
-## Tech Stack
-
-| Technology | Purpose |
-|---|---|
-| **Node.js + Express** | Server & routing |
-| **Passport.js** | Authentication middleware |
-| **passport-google-oauth20** | Google OAuth2 strategy |
-| **passport-github2** | GitHub OAuth2 strategy |
-| **MongoDB + Mongoose** | Database & ODM |
-| **express-session + connect-mongo** | Session management with persistent store |
-| **Helmet** | HTTP security headers |
-| **CORS** | Cross-origin resource sharing |
+[![Created by Serkanby](https://img.shields.io/badge/Created%20by-Serkanby-blue?style=flat-square)](https://serkanbayraktar.com/)
+[![GitHub](https://img.shields.io/badge/GitHub-Serkanbyx-181717?style=flat-square&logo=github)](https://github.com/Serkanbyx)
 
 ---
 
-## Project Structure
+## Features
 
-```
-src/
-├── config/
-│   ├── db.js              # MongoDB connection
-│   ├── passport.js        # Passport strategies & serialization
-│   └── session.js         # Session configuration
-├── models/
-│   └── User.js            # User schema (multi-provider support)
-├── seeds/
-│   └── seedUsers.js       # Fake user data for demo/testing
-├── routes/
-│   ├── authRoutes.js      # OAuth endpoints (login, callback, logout, status)
-│   └── userRoutes.js      # User endpoints (profile, list all)
-├── middlewares/
-│   └── authMiddleware.js  # Authentication guard
-└── app.js                 # Application entry point
-```
+- **Google & GitHub OAuth2**: Authenticate users via Google or GitHub with a single click using Passport.js strategies
+- **Session-Based Authentication**: Secure session management with `express-session` and persistent MongoDB store via `connect-mongo`
+- **Multi-Provider User Model**: Unified user schema supporting multiple OAuth providers with unique compound indexing
+- **Swagger API Documentation**: Interactive OpenAPI 3.0 documentation with Swagger UI for all endpoints
+- **Security Hardened**: HTTP security headers via Helmet, CORS configuration, and httpOnly session cookies
+- **Database Seeding**: Pre-built seed script to populate the database with demo users for quick testing
+- **Modern Landing Page**: Responsive, dark-themed HTML landing page served at the root endpoint
+- **Global Error Handling**: Centralized 404 and 500 error handlers with environment-aware error messages
 
 ---
 
-## Getting Started
+## Live Demo
+
+[🔗 View Live Demo](https://oauth-login-backend-fxh8.onrender.com/)
+
+---
+
+## Technologies
+
+- **Node.js + Express 5**: Server framework and routing
+- **Passport.js**: Authentication middleware with Google and GitHub OAuth2 strategies
+- **MongoDB + Mongoose 9**: NoSQL database with ODM for user and session storage
+- **express-session + connect-mongo**: Session management with persistent MongoDB store
+- **Swagger (swagger-jsdoc + swagger-ui-express)**: Auto-generated OpenAPI 3.0 documentation
+- **Helmet**: HTTP security headers middleware
+- **CORS**: Cross-origin resource sharing configuration
+- **dotenv**: Environment variable management
+- **Nodemon**: Development auto-reload
+
+---
+
+## Installation
 
 ### Prerequisites
 
@@ -56,7 +52,7 @@ src/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/<your-username>/s3.16_OAuth-Login-Backend.git
+git clone https://github.com/Serkanbyx/s3.16_OAuth-Login-Backend.git
 cd s3.16_OAuth-Login-Backend
 ```
 
@@ -120,13 +116,83 @@ Server starts at `http://localhost:3000`.
 
 ---
 
+## Usage
+
+1. Start the server and navigate to `http://localhost:3000`
+2. Click **Login with Google** or **Login with GitHub** to authenticate
+3. After successful login, you are redirected back to the app with an active session
+4. Visit `/api/auth/status` to check your authentication status
+5. Access `/api/user/profile` to view your profile data
+6. Browse `/api-docs` for interactive Swagger API documentation
+7. Visit `/api/auth/logout` to destroy your session and log out
+
+---
+
+## How It Works?
+
+### OAuth2 Authentication Flow
+
+```
+User                    Backend                  Google/GitHub
+ │                         │                         │
+ │── GET /api/auth/google ─►                         │
+ │                         │── Redirect to provider ─►
+ │                         │                         │
+ │◄─── Consent Screen ────────────────────────────────
+ │                         │                         │
+ │── Grant Permission ──────────────────────────────►│
+ │                         │                         │
+ │                         │◄── Callback + code ──────
+ │                         │── Exchange for token ───►
+ │                         │◄── Profile data ─────────
+ │                         │                         │
+ │                         │── Find/Create User (DB) │
+ │                         │── Create Session         │
+ │◄── Redirect + Cookie ───                          │
+```
+
+### Session Management
+
+Sessions are stored in MongoDB via `connect-mongo` with a 24-hour TTL. Cookies are configured with `httpOnly`, `sameSite: lax`, and `secure` flag enabled in production.
+
+### Multi-Provider User Model
+
+Users are uniquely identified by the compound index `{ provider, providerId }`, allowing the same person to have separate accounts for Google and GitHub providers.
+
+---
+
+## Project Structure
+
+```
+src/
+├── config/
+│   ├── db.js              # MongoDB connection
+│   ├── passport.js        # Passport strategies & serialization
+│   ├── session.js         # Session configuration
+│   └── swagger.js         # Swagger/OpenAPI configuration
+├── models/
+│   └── User.js            # User schema (multi-provider support)
+├── seeds/
+│   └── seedUsers.js       # Fake user data for demo/testing
+├── routes/
+│   ├── authRoutes.js      # OAuth endpoints (login, callback, logout, status)
+│   └── userRoutes.js      # User endpoints (profile, list all)
+├── middlewares/
+│   └── authMiddleware.js  # Authentication guard
+└── app.js                 # Application entry point
+```
+
+---
+
 ## API Endpoints
 
 ### Root
 
 | Method | Path | Description |
 |---|---|---|
-| GET | `/` | API overview with all available endpoints |
+| GET | `/` | Landing page with API overview and navigation |
+| GET | `/api-docs` | Interactive Swagger UI documentation |
+| GET | `/api-docs.json` | Raw OpenAPI 3.0 specification (JSON) |
 
 ### Auth Routes (`/api/auth`)
 
@@ -205,29 +271,6 @@ Server starts at `http://localhost:3000`.
 
 ---
 
-## OAuth2 Flow
-
-```
-User                    Backend                  Google/GitHub
- │                         │                         │
- │── GET /api/auth/google ─►                         │
- │                         │── Redirect to provider ─►
- │                         │                         │
- │◄─── Consent Screen ────────────────────────────────
- │                         │                         │
- │── Grant Permission ──────────────────────────────►│
- │                         │                         │
- │                         │◄── Callback + code ──────
- │                         │── Exchange for token ───►
- │                         │◄── Profile data ─────────
- │                         │                         │
- │                         │── Find/Create User (DB) │
- │                         │── Create Session         │
- │◄── Redirect + Cookie ───                          │
-```
-
----
-
 ## Scripts
 
 | Command | Description |
@@ -238,9 +281,50 @@ User                    Backend                  Google/GitHub
 
 ---
 
+## Features in Detail
+
+### Completed Features
+
+- ✅ Google OAuth2 authentication
+- ✅ GitHub OAuth2 authentication
+- ✅ Session-based auth with MongoDB persistent store
+- ✅ Swagger/OpenAPI 3.0 interactive documentation
+- ✅ User profile and listing endpoints
+- ✅ Database seeding with demo users
+- ✅ Security hardening (Helmet, CORS, httpOnly cookies)
+- ✅ Global error handling (404 + 500)
+- ✅ Modern responsive landing page
+- ✅ Environment-aware configuration
+
+### Future Features
+
+- 🔮 [ ] Add Twitter/X OAuth2 provider
+- 🔮 [ ] Implement role-based access control (RBAC)
+- 🔮 [ ] Add rate limiting middleware
+- 🔮 [ ] JWT token-based auth as an alternative
+- 🔮 [ ] Account linking (merge multiple providers into one user)
+
+---
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feat/amazing-feature`)
+3. Commit your changes using semantic format:
+   - `feat:` — New feature
+   - `fix:` — Bug fix
+   - `refactor:` — Code refactoring
+   - `docs:` — Documentation changes
+   - `style:` — Formatting, styling
+   - `chore:` — Maintenance tasks
+4. Push to the branch (`git push origin feat/amazing-feature`)
+5. Open a Pull Request
+
+---
+
 ## License
 
-MIT
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
 
 ---
 
@@ -252,8 +336,14 @@ MIT
 - GitHub: [@Serkanbyx](https://github.com/Serkanbyx)
 - Email: [serkanbyx1@gmail.com](mailto:serkanbyx1@gmail.com)
 
+---
+
 ## Contact
 
 - [Open an Issue](https://github.com/Serkanbyx/s3.16_OAuth-Login-Backend/issues)
 - Email: [serkanbyx1@gmail.com](mailto:serkanbyx1@gmail.com)
 - Website: [serkanbayraktar.com](https://serkanbayraktar.com/)
+
+---
+
+⭐ If you like this project, don't forget to give it a star!

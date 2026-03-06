@@ -1,5 +1,5 @@
 const session = require("express-session");
-const MongoStore = require("connect-mongo");
+const MongoStore = require("connect-mongo").default || require("connect-mongo");
 
 const createSessionConfig = () => {
   const isProduction = process.env.NODE_ENV === "production";

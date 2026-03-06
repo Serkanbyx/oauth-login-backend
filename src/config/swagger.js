@@ -8,6 +8,10 @@ const options = {
       version: "1.0.0",
       description:
         "REST API with Google & GitHub OAuth2 authentication using Passport.js, Express 5, and MongoDB.",
+      contact: {
+        name: "Serkanby",
+        url: "https://serkanbayraktar.com/",
+      },
       license: {
         name: "MIT",
         url: "https://opensource.org/licenses/MIT",

@@ -1,3 +1,6 @@
+[![Created by Serkanby](https://img.shields.io/badge/Created%20by-Serkanby-blue?style=flat-square)](https://serkanbayraktar.com/)
+[![GitHub](https://img.shields.io/badge/GitHub-Serkanbyx-181717?style=flat-square&logo=github)](https://github.com/Serkanbyx)
+
 # OAuth Login Backend (Google / GitHub)
 
 A Node.js/Express backend demonstrating **OAuth2 authentication** with Google and GitHub using **Passport.js**, MongoDB for user storage, and session-based auth management.
@@ -238,3 +241,19 @@ User                    Backend                  Google/GitHub
 ## License
 
 MIT
+
+---
+
+## Developer
+
+**Serkanby**
+
+- Website: [serkanbayraktar.com](https://serkanbayraktar.com/)
+- GitHub: [@Serkanbyx](https://github.com/Serkanbyx)
+- Email: [serkanbyx1@gmail.com](mailto:serkanbyx1@gmail.com)
+
+## Contact
+
+- [Open an Issue](https://github.com/Serkanbyx/s3.16_OAuth-Login-Backend/issues)
+- Email: [serkanbyx1@gmail.com](mailto:serkanbyx1@gmail.com)
+- Website: [serkanbayraktar.com](https://serkanbayraktar.com/)
